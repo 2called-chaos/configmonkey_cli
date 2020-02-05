@@ -24,8 +24,8 @@ module ConfigmonkeyCli
         # Signal.trap("TERM", "DEFAULT")
       end
 
-      def haltpoint
-        raise Interrupt if $cm_runtime_exiting
+      def haltpoint thr = Thread.current
+        thr.raise Interrupt if $cm_runtime_exiting
       end
 
       def interruptable &block
@@ -71,31 +71,6 @@ module ConfigmonkeyCli
             FileUtils.mkdir_p(File.dirname(@opts[:logfile]))
             Logger.new(@opts[:logfile], 10, 1024000)
           end
-        end
-      end
-
-
-      # =======================
-      # = Connection handling =
-      # =======================
-      def fetch_connection type, id, opts = {}, &initializer
-        if !@connections[type] || !@connections[type][id]
-          @connections[type] ||= {}
-          case type
-          when :loopback
-            @connections[type][id] = LoopbackConnection.new(id, opts, &initializer)
-          when :ssh
-            @connections[type][id] = SshConnection.new(id, opts, &initializer)
-          else
-            raise NotImplementedError, "unknown connection type `#{type}'!"
-          end
-        end
-        @connections[type][id]
-      end
-
-      def close_connections!
-        @connections.each do |type, clist|
-          clist.each{|id, con| con.close! }
         end
       end
     end

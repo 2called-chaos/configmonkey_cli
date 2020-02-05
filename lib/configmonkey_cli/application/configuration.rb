@@ -24,9 +24,8 @@ module ConfigmonkeyCli
 
         def load_and_execute_manifest
           manifest = Manifest.new(self, File.realpath(File.expand_path(opts[:working_directory])), @argv[0])
-          if opts[:dev_dump_actions_and_exit]
-            puts *manifest.actions.map(&:to_s)
-            exit 0
+          if opts[:dev_dump_actions]
+            manifest._dump!
           elsif opts[:simulation]
             manifest._simulate!
           else

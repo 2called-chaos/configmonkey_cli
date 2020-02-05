@@ -30,9 +30,12 @@ module ConfigmonkeyCli
 
         @running = true
         load_and_execute_manifest
+      rescue Manifest::ExecutionError => ex
+        error "\nTraceback (most recent call last):"
+        ex.backtrace.reverse.each_with_index {|l, i| error "\t#{"#{ex.backtrace.length - i}:".rjust(4)} #{l}" }
+        error "\n" << "[#{ex.class}] #{ex.message}".strip
       ensure
         @running = false
-        close_connections!
         release_signals
       end
 
