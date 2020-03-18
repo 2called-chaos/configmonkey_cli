@@ -1,7 +1,7 @@
 module ConfigmonkeyCli
   class Application
     class Manifest
-      MANIFEST_ACTIONS = [:chmod, :copy, :custom, :inplace, :invoke, :link, :mkdir, :rsync, :remove, :rtfm, :sync_links]
+      MANIFEST_ACTIONS = [:chmod, :copy, :custom, :inplace, :invoke, :link, :mkdir, :rsync, :remove, :rtfm, :sync_links, :template]
 
       class ExecutionError < ::RuntimeError
         def initialize file, original_exception
@@ -256,7 +256,7 @@ module ConfigmonkeyCli
 
       def ask question, opts = {}
         if opts[:use_thread] != false
-          return app.interruptable { ask(question, opts.except(:use_thread)) }
+          return app.interruptable { ask(question, opts.merge(use_thread: false)) }
         end
         opts[:limited_to] = opts.delete(:choose) if opts[:choose]
         opts[:add_to_history] = true unless opts.key?(:add_to_history)

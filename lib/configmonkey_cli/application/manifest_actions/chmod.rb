@@ -11,7 +11,7 @@ module ConfigmonkeyCli
         end
 
         def prepare
-          @path = File.join(thor.destination_root, @args[0])
+          @path = expand_dst(@args[0])
           @mode = @args[1]
         end
 

@@ -17,13 +17,13 @@ module ConfigmonkeyCli
 
         def simulate
           @args.each do |scope, block|
-            block.call if scope == :always || scope == :simulate
+            block.call(self, manifest) if scope == :always || scope == :simulate
           end
         end
 
         def destructive
           @args.each do |scope, block|
-            block.call if scope == :always || scope == :destructive
+            block.call(self, manifest) if scope == :always || scope == :destructive
           end
         end
 

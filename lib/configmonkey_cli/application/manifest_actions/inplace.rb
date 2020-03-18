@@ -20,7 +20,7 @@ module ConfigmonkeyCli
         end
 
         def destructive
-          @block.call
+          instance_exec(manifest, self, &@block)
         end
       end
     end

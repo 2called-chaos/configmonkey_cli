@@ -11,7 +11,7 @@ module ConfigmonkeyCli
         end
 
         def prepare
-          @actual_directory = File.join(thor.destination_root, @directory)
+          @actual_directory = expand_dst(@directory)
           @link = File.join(@actual_directory, @opts[:name])
         end
 

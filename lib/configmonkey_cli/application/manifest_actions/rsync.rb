@@ -56,8 +56,8 @@ module ConfigmonkeyCli
           [
             @opts[:binary],
             str_flags(force_dry),
-            Shellwords.escape(File.join(manifest.directory, src)),
-            Shellwords.escape(File.join(thor.destination_root, dst))
+            Shellwords.escape(expand_src(src)),
+            Shellwords.escape(expand_dst(dst))
           ].join(" ")
         end
 

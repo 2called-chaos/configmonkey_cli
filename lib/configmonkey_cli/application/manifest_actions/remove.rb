@@ -18,7 +18,7 @@ module ConfigmonkeyCli
 
         def prepare
           @opts[:force] = app.opts[:default_yes]
-          @directories = @args.map{|dir| File.join(thor.destination_root, dir) }
+          @directories = @args.map{|dir| expand_dst(dir) }
         end
 
         def simulate

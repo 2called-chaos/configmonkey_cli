@@ -37,6 +37,22 @@ module ConfigmonkeyCli
           thor.relative_to_original_destination_root(path)
         end
 
+        def expand_src src = ""
+          File.join(manifest.directory, src)
+        end
+
+        def expand_dst dst = ""
+          File.join(thor.destination_root, dst)
+        end
+
+        def exists? *args
+          if args[0].is_a?(Hash)
+            File.exists?(send(:"expand_#{args[0].keys[0]}", args[0].values[0]))
+          else
+            File.exists?(args[0])
+          end
+        end
+
         def status name, *args
           case args.length
           when 0
@@ -50,16 +66,10 @@ module ConfigmonkeyCli
           end
         end
 
-        def padded *args
-          manifest.padded(*args)
-        end
-
-        def c *args
-          manifest.c(*args)
-        end
-
-        def say *args
-          manifest.say(*args)
+        [:padded, :c, :say, :ask, :yes?, :no?].each do |meth|
+          define_method(meth) do |*args, &block|
+            manifest.send(meth, *args, &block)
+          end
         end
 
         def init *a, &b
