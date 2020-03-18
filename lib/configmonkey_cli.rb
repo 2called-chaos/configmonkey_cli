@@ -15,6 +15,7 @@ require "active_support/time_with_zone"
 begin ; require "pry" ; rescue LoadError ; end
 require "httparty"
 require "thor"
+require "tty-prompt"
 
 # lib
 require "configmonkey_cli/version"

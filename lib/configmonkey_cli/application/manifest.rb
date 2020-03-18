@@ -232,6 +232,12 @@ module ConfigmonkeyCli
         thor.say((color.any? ? c(str.to_s, *color) : str.to_s))
       end
 
+      def prompt opts = {}
+        TTY::Prompt.new(opts).tap do |prompt|
+          yield(prompt) if block_given?
+        end
+      end
+
       def status name, *args
         case args.length
         when 0
