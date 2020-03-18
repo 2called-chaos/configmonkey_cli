@@ -13,6 +13,13 @@ If you need help or have problems [open an issue](https://github.com/2called-cha
   * …
 
 
+## ToDo
+
+  * logging
+  * manifest generation
+  * [add something to the list](https://github.com/2called-chaos/configmonkey_cli/issues/new)
+
+
 ## Requirements
 
   * Ruby (>= 2.6)
@@ -24,9 +31,9 @@ If you need help or have problems [open an issue](https://github.com/2called-cha
 
   * `gem install configmonkey_cli`
   * Go into a folder with your configs (manage them in sub folders)
-  * `configmonkey --generate-manifest`
-  * Edit the created file manifest.rb to fit your needs
-  * Run `configmonkey`
+  * ~~`configmonkey --generate-manifest`~~
+  * ~~Edit the created file manifest.rb to fit your needs~~
+  * Run `configmonkey -h`
   * Check out the additional features below
 
 
@@ -36,20 +43,25 @@ To get a list of available options invoke Configmonkey with the `--help` or `-h`
 
     Usage: configmonkey [options]
     # Application options
-            --generate-manifest [myconfig] Generates an example manifest in current folder
-        ###-l, --log [file]                   Log to file, defaults to ~/.configmonkey/logs/configmonkey.log
-        ###-t, --threads [NUM]                Amount of threads to be used for checking (default: 10)
-        ###-s, --silent                       Only print errors and infos
-        ###-q, --quiet                        Only print errors
+            --generate-manifest          Generates an example manifest in current directory
+        -a, --accept                     accept all defaults
+        -b, --no-bell                    dont ring a bell when asked
+        -D, --diff                       change default diff tool
+        -f, --fake-host HOST             override hostname
+        -i, --in DIR                     operate from this source directory instead of pwd
+        -o, --out DIR                    operate on this target directory instead of /
+        -l, --log [file]                 Log changes to file, defaults to ~/.configmonkey/logs/configmonkey.log
+        -M, --merge                      change default merge tool
+        -n, --dry-run                    Simulate changes only, does not perform destructive operations
+        -y, --yes                        accept all prompts with yes
+            --dev-dump-actions           Dump actions and exit
 
     # General options
-        ###-d, --debug [lvl=1]              Enable debug output
-        ###-m, --monochrome                 Don't colorize output
-        ###-h, --help                       Shows this help
-        ###-v, --version                    Shows version and other info
-        ###-z                               Do not check for updates on GitHub (with -v/--version)
-        ###    --dump-core                  for developers
-
+        -d, --debug [lvl=1]              Enable debug output
+        -m, --monochrome                 Don't colorize output
+        -h, --help                       Shows this help
+        -v, --version                    Shows version and other info
+        -z                               Do not check for updates on GitHub (with -v/--version)
 
 ## Application configuration
 
