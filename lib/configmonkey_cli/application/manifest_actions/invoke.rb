@@ -20,10 +20,13 @@ module ConfigmonkeyCli
           code, res = exec(@args[0], @opts[:chomp])
 
           if opts[:echo]
+            lines = res.split("\n")
             if code.exitstatus.zero?
-              say padded("#{c "[OK]", :green} #{res}", :black)
+              say padded("#{c "[OK]", :green} #{lines[0]}", :black)
+              lines[1..-1].each{|l| say padded("     #{l}") }
             else
-              say padded("[#{code.exitstatus}] #{res}", :red)
+              say padded("[#{code.exitstatus}] #{lines[0]}", :red)
+              lines[1..-1].each{|l| say padded("     #{l}") }
               raise "Invoked process exited with status #{code.exitstatus}: #{res}" if opts[:fail]
             end
           end
