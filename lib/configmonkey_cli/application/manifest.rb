@@ -232,6 +232,19 @@ module ConfigmonkeyCli
         thor.say((color.any? ? c(str.to_s, *color) : str.to_s))
       end
 
+      def status name, *args
+        case args.length
+        when 0
+          raise ArgumentError("at least name and string is required")
+        when 1 # status :fake, rel(@destination)
+          thor.say_status name, args[0], :green
+        when 2 # status :fake, :green, rel(@destination)
+          thor.say_status name, args[1], args[0]
+        when 3 # status :fake, :green, rel(@destination), :red
+          thor.say_status name, thor.set_color(args[1], *args[2..-1]), args[0]
+        end
+      end
+
       # do block no matter the `hostname`
       def all &block
         _with_constraint(:any, &block)

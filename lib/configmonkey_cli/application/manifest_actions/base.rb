@@ -53,20 +53,7 @@ module ConfigmonkeyCli
           end
         end
 
-        def status name, *args
-          case args.length
-          when 0
-            raise ArgumentError("at least name and string is required")
-          when 1 # status :fake, rel(@destination)
-            thor.say_status name, args[0], :green
-          when 2 # status :fake, :green, rel(@destination)
-            thor.say_status name, args[1], args[0]
-          when 3 # status :fake, :green, rel(@destination), :red
-            thor.say_status name, thor.set_color(args[1], *args[2..-1]), args[0]
-          end
-        end
-
-        ([:padded, :c, :say, :ask, :yes?, :no?] + Manifest::MANIFEST_ACTIONS).each do |meth|
+        ([:padded, :c, :say, :status, :ask, :yes?, :no?] + Manifest::MANIFEST_ACTIONS).each do |meth|
           define_method(meth) do |*args, &block|
             manifest.send(meth, *args, &block)
           end
