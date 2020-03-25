@@ -112,6 +112,18 @@ module ConfigmonkeyCli
         end
       end
 
+      def run_action which, simulate = nil, *args, &block
+        simulate = app.opts[:simulation] if simulate.nil?
+        action = case which
+        when String, Symbol
+          "ConfigmonkeyCli::Application::ManifestAction::#{which.to_s.camelize}".constantize.new(app, self, *args, &block)
+        else
+          action = which
+        end
+        action.prepare
+        simulate ? action.simulate : action.destructive
+      end
+
       def _dump!
         @actions.each do |constraint, action, instance|
           begin
@@ -143,8 +155,7 @@ module ConfigmonkeyCli
             $cm_current_action_index = index
             $cm_current_action_name = action
             $cm_current_action_color = :magenta
-            instance.prepare
-            simulate ? instance.simulate : instance.destructive
+            run_action(instance, simulate)
           ensure
             $cm_current_action_index = $cm_current_action_name = $cm_current_action_color = nil
             app.haltpoint

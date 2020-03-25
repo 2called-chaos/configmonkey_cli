@@ -53,7 +53,7 @@ module ConfigmonkeyCli
           end
         end
 
-        ([:padded, :c, :say, :status, :prompt, :ask, :yes?, :no?] + Manifest::MANIFEST_ACTIONS).each do |meth|
+        ([:padded, :c, :say, :status, :prompt, :ask, :yes?, :no?, :run_action] + Manifest::MANIFEST_ACTIONS).each do |meth|
           define_method(meth) do |*args, &block|
             manifest.send(meth, *args, &block)
           end
