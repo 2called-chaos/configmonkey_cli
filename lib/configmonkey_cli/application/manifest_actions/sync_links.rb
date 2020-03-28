@@ -48,6 +48,8 @@ module ConfigmonkeyCli
           if @purge
             (Dir["#{File.join(@destination, @prefix)}*"] - prefixed_sources).each do |f|
               thor.remove_file(f)
+              # @todo fix for https://github.com/erikhuda/thor/pull/720
+              ::FileUtils.rm_rf(f) if File.symlink?(f)
             end
           end
 
