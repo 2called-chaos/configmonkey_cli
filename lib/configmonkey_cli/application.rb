@@ -41,7 +41,7 @@ module ConfigmonkeyCli
         hostname: `hostname`.chomp, # -f flag
         diff_tool: nil,             # -D flag
         merge_tool: nil,            # -M flag
-        bell: true,                 # -b flag
+        bell: false,                 # -b flag
         default_accept: false,      # -a flag
         default_yes: false,         # -y flag
         dispatch: :index,           # (internal) action to dispatch
@@ -106,7 +106,7 @@ module ConfigmonkeyCli
         opts.separator(c "# Application options", :blue)
         opts.on("--generate-manifest", "Generates an example manifest in current directory") { @opts[:dispatch] = :generate_manifest }
         opts.on("-a", "--accept", "accept all defaults") { @opts[:default_accept] = true }
-        opts.on("-b", "--no-bell", "dont ring a bell when asked") { @opts[:bell] = false }
+        opts.on("-b", "--bell", "dont ring a bell when asked") { @opts[:bell] = true }
         opts.on("-D", "--diff", "change default diff tool") {|s| @opts[:diff_tool] = s }
         opts.on("-f", "--fake-host HOST", "override hostname") {|s| @opts[:hostname] = s }
         opts.on("-i", "--in DIR", "operate from this source directory instead of pwd") {|s| @opts[:working_directory] = s }

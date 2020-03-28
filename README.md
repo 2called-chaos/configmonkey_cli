@@ -45,7 +45,7 @@ To get a list of available options invoke Configmonkey with the `--help` or `-h`
     # Application options
             --generate-manifest          Generates an example manifest in current directory
         -a, --accept                     accept all defaults
-        -b, --no-bell                    dont ring a bell when asked
+        -b, --bell                       ring a bell when asked
         -D, --diff                       change default diff tool
         -f, --fake-host HOST             override hostname
         -i, --in DIR                     operate from this source directory instead of pwd
