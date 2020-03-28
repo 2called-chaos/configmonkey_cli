@@ -8,6 +8,7 @@ module ConfigmonkeyCli
             prefix: nil,
             map: "d:dp",
             hard: false,
+            exclude: [],
           })
         end
 
@@ -42,7 +43,7 @@ module ConfigmonkeyCli
         def destructive
           prefixed_sources = @sources.map do |src|
             File.join(@destination, "#{@prefix}#{File.basename(src)}")
-          end
+          end.reject{|f| excluded?(f) }
 
           if @purge
             (Dir["#{File.join(@destination, @prefix)}*"] - prefixed_sources).each do |f|
@@ -51,7 +52,24 @@ module ConfigmonkeyCli
           end
 
           @sources.each do |src|
-            thor.create_link("#{@destination}/#{@prefix}#{File.basename(src)}", src, @opts)
+            if r = excluded?(src)
+              status :excluded, :black, rel(src) << c(" #{r.inspect}", :black)
+            else
+              thor.create_link("#{@destination}/#{@prefix}#{File.basename(src)}", src, @opts)
+            end
+          end
+        end
+
+        def excluded? src
+          [*@opts[:exclude]].detect do |filter|
+            case filter
+            when Proc
+              filter.call(src)
+            when Regexp
+              src.match(filter)
+            when String
+              src.ends_with?(filter)
+            end
           end
         end
       end
