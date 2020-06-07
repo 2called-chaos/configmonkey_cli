@@ -1,7 +1,7 @@
 module ConfigmonkeyCli
   class Application
     module ManifestAction
-      class Template < Base
+      class Template < Copy
         def init hargs_and_opts = {}
           @args, @opts = args_and_opts(hargs_and_opts)
         end
@@ -20,17 +20,13 @@ module ConfigmonkeyCli
           end
         end
 
-        def destructive
-          absolute_source = File.join(thor.source_paths[0], @source)
-          if FileTest.directory?(absolute_source)
-            status :invalid, :red, "directory not allowed for template", :red
-          else
-            thor.template(@source, @destination, @opts.merge(context: binding))
-            if @opts[:chmod] && File.exist?(absolute_source) && File.exist?(@destination)
-              mode = @opts[:chmod] == true ? File.stat(absolute_source).mode - 0100000 : @opts[:chmod]
-              thor.chmod(@destination, mode) unless mode == File.stat(@destination).mode - 0100000
-            end
-          end
+        def _perform_directory(source, destination, opts)
+          status :invalid, :red, "directory not allowed for template", :red
+        end
+
+        def _perform_file(source, destination, opts)
+          hostname = app.opts[:hostname]
+          thor.template(@source, @destination, @opts.merge(context: binding))
         end
       end
     end
