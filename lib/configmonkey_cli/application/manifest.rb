@@ -206,7 +206,8 @@ module ConfigmonkeyCli
 
       def push_action *args
         if $cm_current_action_index
-          @actions.insert $cm_current_action_index + 1, [@host_constraint.dup] + args
+          $cm_current_action_index += 1
+          @actions.insert $cm_current_action_index, [@host_constraint.dup] + args
         else
           @actions.push [@host_constraint.dup] + args
         end
